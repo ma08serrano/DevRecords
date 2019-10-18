@@ -52,7 +52,7 @@ router.post(
 router.get('/', auth, async (req, res) => {
   try {
     const posts = await Post.find().sort({ date: -1 });
-    res.json([posts]);
+    res.json(posts);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -70,7 +70,7 @@ router.get('/:id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'Post not found' });
     }
 
-    res.json([post]);
+    res.json(post);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') {
@@ -85,7 +85,7 @@ router.get('/:id', auth, async (req, res) => {
 // @access  Private
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const posts = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.id);
 
     if (!post) {
       return res.status(404).json({ msg: 'Post not found' });
@@ -96,7 +96,7 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
-    await this.post.remove();
+    await post.remove();
 
     res.json({ msg: 'Post removed' });
   } catch (err) {
@@ -111,7 +111,7 @@ router.delete('/:id', auth, async (req, res) => {
 // @route   PUT api/posts/like/:id
 // @desc    Like a post
 // @access  Private
-router.put('/like/:id', auth, async (req, rest) => {
+router.put('/like/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -119,7 +119,7 @@ router.put('/like/:id', auth, async (req, rest) => {
     if (
       post.likes.filter(like => like.user.toString() === req.user.id).length > 0
     ) {
-      return res.json.status(400).json({ msg: 'Post already liked' });
+      return res.status(400).json({ msg: 'Post already liked' });
     }
 
     post.likes.unshift({ user: req.user.id });
@@ -136,7 +136,7 @@ router.put('/like/:id', auth, async (req, rest) => {
 // @route   PUT api/posts/unlike/:id
 // @desc    Like a post
 // @access  Private
-router.put('/unlike/:id', auth, async (req, rest) => {
+router.put('/unlike/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
 
@@ -230,8 +230,8 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
 
     // Get remove index
     const removeIndex = post.comments
-      .map(comment => comment.user.toString())
-      .indexOf(req.user.id);
+      .map(comment => comment.id)
+      .indexOf(req.params.comment_id);
 
     post.comments.splice(removeIndex, 1);
 
