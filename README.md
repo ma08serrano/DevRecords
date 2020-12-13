@@ -8,7 +8,7 @@
 
 ![Screen Shot 2019-11-19 at 8 25 33 PM](https://user-images.githubusercontent.com/30482314/69201114-37fb8e00-0b0b-11ea-8f5b-e83c128b3a67.png)
 - The dashboard where the user can edit their profile, add experiences and education.
-- The user's account can be deleted by just pressing the "Delete My account button.
+- The user's account can be deleted by just pressing the "Delete my account button.
 
 ![Screen Shot 2019-11-19 at 8 32 30 PM](https://user-images.githubusercontent.com/30482314/69201365-0d5e0500-0b0c-11ea-8b13-f9e1bed2ed2b.png)
 - Post page where the user can like, unlike and post their comments just like a forum website.
